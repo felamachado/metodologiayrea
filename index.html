@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodología de la Educación a Distancia</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #1a237e 0%, #283593 55%, #1565c0 100%);
+  padding: 40px 24px 32px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  pointer-events: none;
+}
+.header-inner { max-width: 800px; margin: 0 auto; }
+.header-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #c5cae9;
+  margin-bottom: 14px;
+}
+.header h1 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: .92rem;
+  color: #c5cae9;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+/* MAIN */
+.main { max-width: 800px; margin: 0 auto; padding: 32px 20px 60px; }
+
+.section-heading {
+  margin-bottom: 20px;
+}
+.section-heading h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 4px;
+}
+.section-heading p {
+  font-size: .84rem;
+  color: #666;
+}
+
+/* MODULE CARDS */
+.module-list { display: flex; flex-direction: column; gap: 12px; }
+
+.module-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.module-card.active:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(26,35,126,.12);
+  border-color: #bccfff;
+}
+.module-card.disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.module-num {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.module-num.active { background: #e3f2fd; color: #1565c0; }
+.module-num.disabled { background: #f0f0f0; color: #aaa; }
+
+.module-info { flex: 1; min-width: 0; }
+.module-info h3 {
+  font-size: .97rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 3px;
+}
+.module-card.disabled .module-info h3 { color: #888; }
+.module-info p {
+  font-size: .82rem;
+  color: #666;
+  line-height: 1.45;
+}
+
+.module-status {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+.status-available { background: #e8f5e9; color: #2e7d32; }
+.status-soon { background: #f5f5f5; color: #999; }
+
+.module-arrow {
+  font-size: 1.1rem;
+  color: #1565c0;
+  flex-shrink: 0;
+}
+.module-card.disabled .module-arrow { color: #ccc; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: .75rem;
+  color: #aaa;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <span class="header-badge">📚 Profesorado de Informática · Uruguay</span>
+    <h1>Metodología de la Educación a Distancia</h1>
+    <p>Recursos Educativos Abiertos para la formación docente en entornos virtuales de aprendizaje.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="section-heading">
+    <h2>Módulos del curso</h2>
+    <p>Hacé click en un módulo disponible para acceder a su contenido</p>
+  </div>
+
+  <div class="module-list">
+
+    <div class="module-card disabled">
+      <div class="module-num disabled">M1</div>
+      <div class="module-info">
+        <h3>Módulo 1: Fundamentos de la Educación a Distancia</h3>
+        <p>Historia, evolución y bases teóricas de la EaD. Modelos y paradigmas de la educación no presencial.</p>
+      </div>
+      <span class="module-status status-soon">Próximamente</span>
+      <span class="module-arrow">›</span>
+    </div>
+
+    <div class="module-card disabled">
+      <div class="module-num disabled">M2</div>
+      <div class="module-info">
+        <h3>Módulo 2: Diseño Instruccional para Entornos Virtuales</h3>
+        <p>Principios de diseño instruccional, objetivos de aprendizaje y secuenciación de contenidos en EVA.</p>
+      </div>
+      <span class="module-status status-soon">Próximamente</span>
+      <span class="module-arrow">›</span>
+    </div>
+
+    <a class="module-card active" href="modulo3.html">
+      <div class="module-num active">M3</div>
+      <div class="module-info">
+        <h3>Módulo 3: Construcción de un Curso en un EVA y el Rol Docente</h3>
+        <p>Elementos de un EVA, estructura de aulas virtuales, el tutor virtual y organización de recursos.</p>
+      </div>
+      <span class="module-status status-available">Disponible</span>
+      <span class="module-arrow">›</span>
+    </a>
+
+    <a class="module-card active" href="modulo4.html">
+      <div class="module-num active">M4</div>
+      <div class="module-info">
+        <h3>Módulo 4: Recursos Educativos Abiertos (REA)</h3>
+        <p>Fundamentos de los REA, las 4Rs de Wiley, licencias Creative Commons, metadatos LOM y el modelo CO-CREARIA de co-creación inclusiva.</p>
+      </div>
+      <span class="module-status status-available">Disponible</span>
+      <span class="module-arrow">›</span>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">
+  Profesorado de Informática · Metodología EaD · Recursos Educativos Abiertos
+</div>
+
+</body>
+</html>

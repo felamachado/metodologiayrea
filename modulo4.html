@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4: Recursos Educativos Abiertos (REA)</title>
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary:      #1a237e;
+  --primary-mid:  #283593;
+  --primary-lt:   #1565c0;
+  --accent:       #e65100;
+  --accent-soft:  #fff8e1;
+  --accent-border:#ffe082;
+  --bg:           #f0f4f8;
+  --card:         #ffffff;
+  --border:       #e2e8f0;
+  --text:         #1a1a2e;
+  --muted:        #555;
+  --radius-lg:    14px;
+  --radius-md:    10px;
+  --radius-sm:    8px;
+  --shadow-sm:    0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:    0 4px 20px rgba(26,35,126,.12);
+}
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 55%, var(--primary-lt) 100%);
+  padding: 36px 24px 28px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  pointer-events: none;
+}
+.header-inner { max-width: 860px; margin: 0 auto; }
+.header-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #c5cae9;
+  margin-bottom: 12px;
+}
+.page-header h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.page-header .lead {
+  font-size: .92rem;
+  color: #c5cae9;
+  max-width: 600px;
+  line-height: 1.65;
+}
+
+/* ── TAB BAR ── */
+.tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--card);
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.tab-bar-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+}
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--primary); background: #f5f7ff; }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-btn .tab-icon { font-size: 1.1rem; }
+
+/* ── TAB PANELS ── */
+.tab-panels { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; }
+.tab-panel { display: none; animation: fadeIn .3s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── SECTION HEADING ── */
+.section-heading { margin: 28px 0 16px; }
+.section-heading h2 {
+  font-size: 1.2rem; font-weight: 700; color: var(--primary);
+  margin-bottom: 4px;
+}
+.section-heading p { font-size: .85rem; color: var(--muted); }
+
+/* ── CARDS GRID ── */
+.card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0; }
+.card-grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 16px 0; }
+
+/* ── GENERIC CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── CLICKABLE CARD (opens modal) ── */
+.card-clickable {
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative;
+}
+.card-clickable:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: #bccfff;
+}
+.card-clickable .card-hint {
+  position: absolute;
+  bottom: 12px; right: 14px;
+  font-size: .7rem;
+  color: var(--primary-lt);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity .2s;
+}
+.card-clickable:hover .card-hint { opacity: 1; }
+.card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.card h3 { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.card p { font-size: .84rem; color: var(--muted); line-height: 1.55; }
+
+/* ── NAV CARDS (Tab 1) ── */
+.nav-card {
+  text-align: center;
+  padding: 28px 20px 22px;
+  cursor: pointer;
+}
+.nav-card .nav-card-icon { font-size: 2.4rem; margin-bottom: 14px; display: block; }
+.nav-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.nav-card .btn { margin-top: 14px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-block;
+  padding: 9px 20px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn:hover { background: var(--primary-lt); }
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+.btn-outline:hover { background: var(--primary); color: #fff; }
+.btn-resource {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #f5f7ff;
+  border: 1px solid #c5cae9;
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  font-size: .84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s, border-color .15s;
+}
+.btn-resource:hover { background: #e8eaf6; border-color: var(--primary); }
+.resource-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.highlight-box strong { color: var(--accent); }
+.highlight-box p { font-size: .88rem; color: #444; line-height: 1.65; margin: 0; }
+
+/* ── SEPARATOR ── */
+.sep-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.sep-box { border-radius: var(--radius-md); padding: 18px; text-align: center; }
+.sep-recursos { background: #e3f2fd; border: 2px solid #1565c0; }
+.sep-actividades { background: #e8f5e9; border: 2px solid #388e3c; }
+.sep-box h4 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; }
+.sep-recursos h4 { color: #1565c0; }
+.sep-actividades h4 { color: #2e7d32; }
+.sep-box ul { list-style: none; font-size: .81rem; color: #444; line-height: 1.9; text-align: left; }
+.sep-box ul li::before { margin-right: 6px; }
+.sep-recursos li::before { content: '🔵'; }
+.sep-actividades li::before { content: '🟢'; }
+
+/* ── STRUCTURE DIAGRAM ── */
+.structure-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.struct-block { border-radius: var(--radius-md); padding: 18px; }
+.struct-general { background: #e8f5e9; border: 2px solid #388e3c; }
+.struct-desarrollo { background: #fff3e0; border: 2px solid #e65100; }
+.struct-block h4 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; }
+.struct-general h4 { color: #2e7d32; }
+.struct-desarrollo h4 { color: var(--accent); }
+.struct-block ul { list-style: none; font-size: .82rem; color: #444; line-height: 1.85; }
+.struct-block ul li::before { content: '▸ '; color: inherit; }
+
+/* ── FUNCTION CARDS ── */
+.func-card {
+  background: #f8faff;
+  border: 1px solid #dce8ff;
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+.func-card .func-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+.func-card h3 { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.func-card p { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+
+/* ── ACCORDION ── */
+.accordion-list { margin: 16px 0; }
+.acc-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.acc-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: background .15s;
+}
+.acc-trigger:hover { background: #f5f7ff; }
+.acc-num {
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .72rem; font-weight: 700; flex-shrink: 0;
+}
+.acc-arrow { margin-left: auto; font-size: .75rem; transition: transform .25s; }
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.acc-body-inner {
+  padding: 0 18px 16px 60px;
+  font-size: .86rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.acc-item.open .acc-body { max-height: 300px; }
+
+/* ── FOLDER CARDS ── */
+.folder-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.folder-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.folder-card .f-icon { font-size: 2.2rem; flex-shrink: 0; }
+.folder-card h3 { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.folder-card p { font-size: .84rem; color: var(--muted); line-height: 1.55; }
+.folder-cards-col { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; gap: 0; margin: 20px 0; }
+.timeline-step {
+  flex: 1;
+  background: #f3e5f5;
+  border: 1px solid #ce93d8;
+  padding: 18px 16px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  transition: background .2s;
+}
+.timeline-step:hover { background: #e1bee7; }
+.timeline-step:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.timeline-step:last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+.timeline-step + .timeline-step::before {
+  content: '▶';
+  position: absolute;
+  left: -12px; top: 50%;
+  transform: translateY(-50%);
+  color: #7b1fa2;
+  font-size: .8rem;
+  z-index: 1;
+}
+.timeline-step .step-num {
+  font-size: 1.4rem; font-weight: 800; color: #7b1fa2;
+  display: block; margin-bottom: 6px;
+}
+.timeline-step h4 { font-size: .82rem; font-weight: 700; color: #4a148c; margin-bottom: 4px; }
+.timeline-step p { font-size: .76rem; color: #555; line-height: 1.45; }
+
+/* ── VIDEO CARD ── */
+.video-section { margin: 20px 0; }
+.video-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.video-card {
+  display: block;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  background: #000;
+  aspect-ratio: 16/9;
+  transition: box-shadow .2s;
+}
+.video-card:hover { box-shadow: var(--shadow-md); }
+.video-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity .2s;
+}
+.video-card:hover img { opacity: .85; }
+.video-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.video-play-btn {
+  width: 64px; height: 64px;
+  background: rgba(255,0,0,.9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s, background .2s;
+}
+.video-card:hover .video-play-btn {
+  transform: scale(1.12);
+  background: #ff0000;
+}
+.video-play-btn::after {
+  content: '';
+  border-style: solid;
+  border-width: 10px 0 10px 20px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 4px;
+}
+.video-title-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,.75));
+  color: #fff;
+  padding: 20px 14px 12px;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* ── INTRO QUOTE ── */
+.intro-quote {
+  background: var(--card);
+  border-left: 4px solid var(--primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 18px 22px;
+  margin: 16px 0;
+  box-shadow: var(--shadow-sm);
+}
+.intro-quote p { font-size: .92rem; color: #333; line-height: 1.75; font-style: italic; }
+.intro-quote cite { font-size: .78rem; color: var(--muted); font-style: normal; display: block; margin-top: 8px; }
+
+/* ── LICENSE CARDS ── */
+.license-card {
+  border-radius: var(--radius-md);
+  padding: 18px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+}
+.license-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.license-card .lic-icon { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+.license-card h3 { font-size: .88rem; font-weight: 800; margin-bottom: 4px; }
+.license-card p { font-size: .78rem; color: #555; line-height: 1.4; margin-top: 6px; }
+.lic-status {
+  display: inline-block;
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  border-radius: 12px; padding: 2px 10px; margin-top: 6px;
+}
+.license-card .card-hint {
+  position: absolute; bottom: 8px; right: 10px;
+  font-size: .68rem; font-weight: 600; opacity: 0; transition: opacity .2s;
+}
+.license-card:hover .card-hint { opacity: 1; }
+.lic-rea-yes { background: #e8f5e9; border: 2px solid #388e3c; }
+.lic-rea-yes h3 { color: #2e7d32; }
+.lic-rea-yes .lic-status { background: #c8e6c9; color: #1b5e20; }
+.lic-rea-yes .card-hint { color: #388e3c; }
+.lic-rea-no { background: #ffebee; border: 2px solid #c62828; }
+.lic-rea-no h3 { color: #b71c1c; }
+.lic-rea-no .lic-status { background: #ffcdd2; color: #b71c1c; }
+.lic-rea-no .card-hint { color: #c62828; }
+.lic-cc0 { background: #f3e5f5; border: 2px solid #7b1fa2; }
+.lic-cc0 h3 { color: #4a148c; }
+.lic-cc0 .lic-status { background: #e1bee7; color: #4a148c; }
+.lic-cc0 .card-hint { color: #7b1fa2; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeOverlay .2s ease;
+}
+.modal-overlay.open { display: flex; }
+@keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
+.modal-box {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  max-width: 620px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  animation: scaleIn .25s ease;
+}
+@keyframes scaleIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+.modal-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.modal-header h2 { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+.modal-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.2rem; color: var(--muted);
+  padding: 2px 6px; border-radius: 6px;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.modal-close:hover { background: var(--border); }
+.modal-body { padding: 20px 22px 24px; }
+.modal-body p { font-size: .9rem; color: #333; line-height: 1.7; margin-bottom: 12px; }
+.modal-body ul { padding-left: 18px; font-size: .88rem; color: #444; line-height: 1.8; }
+.modal-body h4 { font-size: .9rem; font-weight: 700; color: var(--primary); margin: 14px 0 6px; }
+
+/* ── CHIP / TAG ── */
+.chip {
+  display: inline-block;
+  background: #e3f2fd; color: var(--primary-lt);
+  border-radius: 20px; padding: 3px 12px;
+  font-size: .72rem; font-weight: 700; letter-spacing: .04em;
+}
+.chip-accent { background: #fff3e0; color: var(--accent); }
+.chip-green { background: #e8f5e9; color: #2e7d32; }
+.chip-red { background: #ffebee; color: #c62828; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .page-header h1 { font-size: 1.25rem; }
+  .card-grid-2, .card-grid-3, .structure-diagram, .sep-wrap { grid-template-columns: 1fr; }
+  .tab-btn .tab-label { display: none; }
+  .timeline { flex-direction: column; }
+  .timeline-step { border-radius: var(--radius-sm) !important; }
+  .timeline-step + .timeline-step::before { content: '▼'; left: 50%; top: -12px; transform: translateX(-50%); }
+}
+@media (max-width: 440px) {
+  .tab-panels { padding: 16px 14px 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<div class="page-header">
+  <div class="header-inner">
+    <span class="header-badge">📚 Profesorado de Informática · Metodología EaD</span>
+    <h1>Módulo 4: Recursos Educativos Abiertos (REA)</h1>
+    <p class="lead">Explorá los fundamentos del conocimiento abierto, el licenciamiento Creative Commons, la arquitectura de metadatos y el modelo de co-creación inclusiva CO-CREARIA.</p>
+  </div>
+</div>
+
+<!-- ═══════ TAB BAR ═══════ -->
+<nav class="tab-bar" role="tablist">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" onclick="switchTab('inicio')" role="tab" aria-selected="true">
+      <span class="tab-icon">🏠</span><span class="tab-label">Inicio</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('fundamentos')" role="tab" aria-selected="false">
+      <span class="tab-icon">📖</span><span class="tab-label">Fundamentos REA</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('licencias')" role="tab" aria-selected="false">
+      <span class="tab-icon">⚖️</span><span class="tab-label">Licencias y Arquitectura</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('cocreacion')" role="tab" aria-selected="false">
+      <span class="tab-icon">🛠️</span><span class="tab-label">Co-Creación y Calidad</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════ TAB PANELS ═══════ -->
+<div class="tab-panels">
+
+  <!-- ── TAB 1: INICIO ── -->
+  <div id="panel-inicio" class="tab-panel active">
+
+    <div class="intro-quote">
+      <p>Los Recursos Educativos Abiertos trascienden la mera disponibilidad de materiales gratuitos; representan una transformación estructural hacia la <strong>democratización del conocimiento</strong> y el empoderamiento de la comunidad académica. En este paradigma, los REA no son objetos estáticos, sino catalizadores de un modelo de participación activa donde el docente y el estudiante asumen la <em>co-autoría de su proceso formativo</em>.</p>
+      <cite>— Basado en UNESCO y David Wiley (2002)</cite>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>¿Qué vas a encontrar en este módulo?</strong> Tres grandes bloques organizan el recorrido: los fundamentos de los REA y las 4Rs de Wiley; el licenciamiento Creative Commons, los estándares de metadatos y la arquitectura de repositorios; y el modelo CO-CREARIA de co-creación inclusiva con su checklist de calidad.</p>
+    </div>
+
+    <div class="section-heading">
+      <h2>Navegá el módulo</h2>
+      <p>Hacé click en una sección para explorarla</p>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card nav-card card-clickable" onclick="switchTab('fundamentos')">
+        <span class="nav-card-icon">📖</span>
+        <h3>Fundamentos REA</h3>
+        <p>Las 4Rs de David Wiley y los marcos teóricos que sustentan los Recursos Educativos Abiertos.</p>
+        <button class="btn" style="margin-top:14px;">Explorar →</button>
+      </div>
+      <div class="card nav-card card-clickable" onclick="switchTab('licencias')">
+        <span class="nav-card-icon">⚖️</span>
+        <h3>Licencias y Arquitectura</h3>
+        <p>Licencias Creative Commons, la herramienta Yabalá, metadatos Dublin Core/LOM y repositorios DSpace.</p>
+        <button class="btn" style="margin-top:14px;">Explorar →</button>
+      </div>
+      <div class="card nav-card card-clickable" onclick="switchTab('cocreacion')">
+        <span class="nav-card-icon">🛠️</span>
+        <h3>Co-Creación y Calidad</h3>
+        <p>Modelo CO-CREARIA con DUA/UDL, caso de estudio UPB y checklist de calidad REA.</p>
+        <button class="btn" style="margin-top:14px;">Explorar →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── TAB 2: FUNDAMENTOS REA ── -->
+  <div id="panel-fundamentos" class="tab-panel">
+
+    <div class="intro-quote">
+      <p>La naturaleza de lo "abierto" se manifiesta en una dualidad técnica y legal: mientras que lo técnico garantiza la <strong>interoperabilidad entre plataformas</strong>, lo legal otorga permisos explícitos para adaptar, combinar, reusar y redistribuir materiales. Esto convierte al docente y al estudiante en co-autores del conocimiento.</p>
+      <cite>— UNESCO / David Wiley, Fundamentos de los REA</cite>
+    </div>
+
+    <div class="section-heading">
+      <h2>Las 4Rs de David Wiley</h2>
+      <p>Los permisos fundamentales que definen un Recurso Educativo Abierto — hacé click para profundizar</p>
+    </div>
+
+    <div class="card-grid-2">
+      <div class="card func-card card-clickable" onclick="openModal('r-revisar')">
+        <span class="func-icon">✏️</span>
+        <h3>Revisar (Revise)</h3>
+        <p>Adaptar y mejorar el recurso según necesidades específicas del contexto educativo.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card func-card card-clickable" onclick="openModal('r-combinar')">
+        <span class="func-icon">🔀</span>
+        <h3>Combinar (Remix)</h3>
+        <p>Mezclar materiales diversos para generar obras originales y enriquecidas.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card func-card card-clickable" onclick="openModal('r-reusar')">
+        <span class="func-icon">♻️</span>
+        <h3>Reusar (Reuse)</h3>
+        <p>Utilizar el recurso en múltiples contextos, cursos y formatos sin modificación.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card func-card card-clickable" onclick="openModal('r-redistribuir')">
+        <span class="func-icon">📤</span>
+        <h3>Redistribuir (Redistribute)</h3>
+        <p>Compartir copias de la obra original o sus versiones derivadas con otros.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <h2>Marcos Teóricos</h2>
+      <p>Los REA se articulan con corrientes pedagógicas contemporáneas — hacé click para profundizar</p>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card card-clickable" onclick="openModal('teo-conectivismo')">
+        <div class="card-icon">🌐</div>
+        <h3>Conectivismo</h3>
+        <p>Siemens (2005): el aprendizaje reside en la capacidad de navegar y nutrir redes de información.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card card-clickable" onclick="openModal('teo-constructivismo')">
+        <div class="card-icon">🏗️</div>
+        <h3>Constructivismo Sociocultural</h3>
+        <p>Vygotsky: los REA actúan como instrumentos de mediación simbólica en el proceso de aprendizaje.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card card-clickable" onclick="openModal('teo-zdp')">
+        <div class="card-icon">📐</div>
+        <h3>Zona de Desarrollo Próximo</h3>
+        <p>El REA como andamio que permite al estudiante alcanzar niveles superiores de competencia.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+    </div>
+
+    <div class="section-heading"><h2>📺 Recursos Audiovisuales</h2></div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — ¿Qué es OER? Recursos Educativos Abiertos</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=dybb1Fec8-I" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/dybb1Fec8-I/hqdefault.jpg" alt="¿Qué es OER? - REA Recursos Educativos Abiertos" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">¿Qué es OER? — Recursos Educativos Abiertos</div>
+      </a>
+    </div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — Microaprendizaje: ¿Qué son los Recursos Educativos Abiertos?</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=yQVpuAYzedE" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/yQVpuAYzedE/hqdefault.jpg" alt="Microaprendizaje: ¿Qué son los Recursos Educativos Abiertos?" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">Microaprendizaje: ¿Qué son los Recursos Educativos Abiertos?</div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- ── TAB 3: LICENCIAS Y ARQUITECTURA ── -->
+  <div id="panel-licencias" class="tab-panel">
+
+    <div class="section-heading">
+      <h2>Licencias Creative Commons</h2>
+      <p>El andamiaje legal que habilita el "algunos derechos reservados" — hacé click en cada licencia</p>
+    </div>
+
+    <div class="card-grid-auto">
+
+      <div class="license-card lic-rea-yes" onclick="openModal('cc-by')">
+        <span class="lic-icon">🔓</span>
+        <h3>CC BY</h3>
+        <p>Solo requiere atribución de autoría</p>
+        <span class="lic-status">✓ Sí REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-rea-yes" onclick="openModal('cc-by-sa')">
+        <span class="lic-icon">🔓</span>
+        <h3>CC BY-SA</h3>
+        <p>Derivadas con la misma licencia</p>
+        <span class="lic-status">✓ Sí REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-rea-yes" onclick="openModal('cc-by-nc')">
+        <span class="lic-icon">🔓</span>
+        <h3>CC BY-NC</h3>
+        <p>Sin fines comerciales</p>
+        <span class="lic-status">✓ Sí REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-rea-yes" onclick="openModal('cc-by-nc-sa')">
+        <span class="lic-icon">🔓</span>
+        <h3>CC BY-NC-SA</h3>
+        <p>Sin fines comerciales + misma licencia</p>
+        <span class="lic-status">✓ Sí REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-rea-no" onclick="openModal('cc-by-nd')">
+        <span class="lic-icon">🔒</span>
+        <h3>CC BY-ND</h3>
+        <p>Solo copias literales, sin derivadas</p>
+        <span class="lic-status">✗ No REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-rea-no" onclick="openModal('cc-by-nc-nd')">
+        <span class="lic-icon">🔒</span>
+        <h3>CC BY-NC-ND</h3>
+        <p>Sin comercio ni derivadas</p>
+        <span class="lic-status">✗ No REA</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+      <div class="license-card lic-cc0" onclick="openModal('cc0')">
+        <span class="lic-icon">🌐</span>
+        <h3>CC0 / PD</h3>
+        <p>Dominio Público — sin restricciones</p>
+        <span class="lic-status">✓ Máxima apertura</span>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>¿Cómo saber qué licencia resulta al combinar dos materiales?</strong> El módulo <strong>Yabalá</strong> y su herramienta Calculator resuelven automáticamente los conflictos de compatibilidad entre licencias, generan <strong>URLs permanentes</strong> de atribución en HTML y <strong>códigos QR</strong> que vinculan a la información de autoría — garantizando trazabilidad en cualquier entorno digital o físico.</p>
+    </div>
+
+    <div class="card card-clickable" onclick="openModal('yabala-calculator')" style="margin-bottom:24px;">
+      <div class="card-icon">🔧</div>
+      <h3>Yabalá Calculator — Compatibilidad de Licencias</h3>
+      <p>Resuelve conflictos de compatibilidad entre licencias CC, genera URLs permanentes y códigos QR de atribución profesional.</p>
+      <span class="card-hint">Ver más ›</span>
+    </div>
+
+    <div class="section-heading">
+      <h2>Estándares de Metadatos</h2>
+      <p>Cómo describir un REA para que sea visible y recuperable en buscadores y repositorios</p>
+    </div>
+
+    <div class="sep-wrap">
+      <div class="sep-box sep-recursos">
+        <h4>🔵 DUBLIN CORE — 15 Elementos</h4>
+        <ul>
+          <li>Título (Title)</li>
+          <li>Creador (Creator)</li>
+          <li>Materia (Subject)</li>
+          <li>Descripción (Description)</li>
+          <li>Editor (Publisher)</li>
+          <li>Colaborador (Contributor)</li>
+          <li>Fecha (Date)</li>
+          <li>Tipo (Type)</li>
+          <li>Formato (Format)</li>
+          <li>Identificador (Identifier)</li>
+          <li>Fuente (Source)</li>
+          <li>Idioma (Language)</li>
+          <li>Relación (Relation)</li>
+          <li>Cobertura (Coverage)</li>
+          <li>Derechos (Rights)</li>
+        </ul>
+      </div>
+      <div class="sep-box sep-actividades">
+        <h4>🟢 LOM — Obligatorios para Ceibal 4.1</h4>
+        <ul>
+          <li><strong>learningResourceType</strong> — Tipo didáctico del recurso (simulación, experimento, cuestionario…)</li>
+          <li><strong>keywords</strong> — Descriptores semánticos para la indexación temática</li>
+        </ul>
+        <div style="margin-top:14px;padding:10px;background:#f1f8e9;border-radius:8px;text-align:left;font-size:.8rem;color:#33691e;">
+          <strong>¿Por qué solo 2 campos?</strong><br>
+          Reducir la fatiga administrativa del docente sin sacrificar la capacidad de búsqueda del repositorio.
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid-2" style="margin-top:8px;">
+      <div class="card card-clickable" onclick="openModal('meta-dublin')">
+        <div class="card-icon">🗃️</div>
+        <h3>Dublin Core — Detalle completo</h3>
+        <p>Los 15 elementos con descripción de cada campo y su propósito en la interoperabilidad universal.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+      <div class="card card-clickable" onclick="openModal('meta-lom')">
+        <div class="card-icon">📐</div>
+        <h3>LOM — Learning Object Metadata</h3>
+        <p>La dimensión pedagógica de los metadatos y el enfoque pragmático del repositorio Ceibal 4.1.</p>
+        <span class="card-hint">Ver más ›</span>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <h2>Jerarquía Técnica en Repositorios: DSpace</h2>
+      <p>Cómo se organiza el conocimiento en un repositorio institucional robusto</p>
+    </div>
+
+    <div class="structure-diagram">
+      <div class="struct-block struct-general">
+        <h4>🟢 Nivel Superior</h4>
+        <ul>
+          <li>Comunidades (instituciones o facultades)</li>
+          <li>Colecciones (agrupaciones temáticas)</li>
+          <li>Ítems (objeto básico de archivo)</li>
+        </ul>
+      </div>
+      <div class="struct-block struct-desarrollo">
+        <h4>🟠 Nivel de Ítem</h4>
+        <ul>
+          <li>Bundles — paquetes que agrupan archivos relacionados</li>
+          <li>Bitstreams — flujos de datos reales (imagen, texto, código)</li>
+          <li>Metadatos pedagógicos LOM asociados</li>
+          <li>Vinculación entre bitstreams y su descripción</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-clickable" onclick="openModal('meta-dspace')" style="margin-bottom:8px;">
+      <div class="card-icon">🏛️</div>
+      <h3>DSpace — Jerarquía técnica completa</h3>
+      <p>Recorrido detallado por los niveles del repositorio: de Comunidades hasta Bitstreams.</p>
+      <span class="card-hint">Ver más ›</span>
+    </div>
+
+    <div class="section-heading"><h2>📺 Recursos Audiovisuales</h2></div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — Qué son y cómo funcionan las licencias Creative Commons</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=8Ec4Pgs8ClA" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/8Ec4Pgs8ClA/hqdefault.jpg" alt="Qué son y cómo funcionan las licencias Creative Commons" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">Qué son y cómo funcionan las licencias Creative Commons</div>
+      </a>
+    </div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — ¿Qué es Creative Commons? (tipos de licencia)</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=ksmzVNMJhZ4" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/ksmzVNMJhZ4/hqdefault.jpg" alt="¿Qué es Creative Commons? y sus tipos de licencia" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">¿Qué es Creative Commons? (y sus tipos de licencia)</div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- ── TAB 4: CO-CREACIÓN Y CALIDAD ── -->
+  <div id="panel-cocreacion" class="tab-panel">
+
+    <div class="intro-quote">
+      <p>La co-creación es una estrategia que integra la diversidad como un <strong>componente nativo del diseño</strong>, no como un parche posterior. El modelo CO-CREARIA adapta el ciclo ADDIE para garantizar que los principios del <em>Diseño Universal para el Aprendizaje (DUA/UDL)</em> guíen cada fase del desarrollo.</p>
+      <cite>— Baldiris, Avila et al. (2015) — CO-CREARIA: Modelo de Co-Creación de REA Inclusivos y Accesibles</cite>
+    </div>
+
+    <div class="section-heading">
+      <h2>Modelo CO-CREARIA — Fases y Productos</h2>
+      <p>Adaptación del ciclo ADDIE con principios DUA/UDL — hacé click en cada fase</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-step" onclick="openModal('fase-analisis')">
+        <span class="step-num">A</span>
+        <h4>Análisis</h4>
+        <p>Perfil poblacional y análisis de ambiente</p>
+      </div>
+      <div class="timeline-step" onclick="openModal('fase-diseno')">
+        <span class="step-num">D</span>
+        <h4>Diseño</h4>
+        <p>Guiones y detección de barreras</p>
+      </div>
+      <div class="timeline-step" onclick="openModal('fase-desarrollo')">
+        <span class="step-num">D</span>
+        <h4>Desarrollo</h4>
+        <p>Producción con herramientas accesibles</p>
+      </div>
+      <div class="timeline-step" onclick="openModal('fase-evaluacion')">
+        <span class="step-num">E</span>
+        <h4>Evaluación</h4>
+        <p>Validación técnica, web y pedagógica</p>
+      </div>
+      <div class="timeline-step" onclick="openModal('fase-implementacion')">
+        <span class="step-num">I</span>
+        <h4>Implementación</h4>
+        <p>Despliegue real con retroalimentación</p>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Cada fase produce entregables concretos.</strong> Hacé click en cada fase del ciclo para ver los productos esperados, los criterios DUA aplicados y ejemplos de aplicación del modelo.</p>
+    </div>
+
+    <div class="section-heading">
+      <h2>Caso de Estudio: Universidad Pontificia Bolivariana</h2>
+      <p>"Cuida tu ambiente con TIC" — inclusión y accesibilidad en acción</p>
+    </div>
+
+    <div class="folder-card" onclick="openModal('caso-upb')">
+      <span class="f-icon">🏛️</span>
+      <div>
+        <h3>Caso UPB — "Cuida tu ambiente con TIC"</h3>
+        <p>Co-creación con docentes, psicopedagogos y padres para estudiantes con baja visión e hiperactividad. Integración de ABP y Aula Invertida para eliminar barreras de acceso tradicionales.</p>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <h2>Checklist de Calidad REA</h2>
+      <p>6 criterios para evaluar si un recurso es genuinamente abierto y accesible — hacé click para expandir</p>
+    </div>
+
+    <div class="accordion-list">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">1</span>
+          Licenciamiento Abierto
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿La licencia del recurso permite explícitamente el remix y la creación de obras derivadas (cumple las 4R)?<br><br>
+            Las licencias CC BY-ND y CC BY-NC-ND <strong>no califican</strong> como REA porque prohíben las derivadas. Verificá que la licencia sea al menos CC BY, CC BY-SA, CC BY-NC o CC BY-NC-SA. El dominio público (CC0) es la opción más abierta.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">2</span>
+          Atribución Técnica
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿El recurso incluye créditos claros con URLs permanentes o códigos QR generados por herramientas como Yabalá?<br><br>
+            La atribución no solo es un requisito legal sino una práctica de trazabilidad: permite identificar la obra original, verificar su licencia y dar crédito correcto al autor en cualquier reutilización o remix posterior.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">3</span>
+          Interoperabilidad de Formato
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿Se ofrece en formatos editables y abiertos (ej. ODT, ODP) que faciliten la revisión y adaptación?<br><br>
+            Un PDF sin capas no permite ejecutar la R de Revisar. Para que un recurso sea verdaderamente abierto debe poder modificarse. Ofrecer además el formato editable (fuente) es una buena práctica esencial del diseño instruccional abierto.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">4</span>
+          Accesibilidad DUA
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿Existen alternativas textuales para imágenes (atributo alt) y subtítulos para videos?<br><br>
+            El Diseño Universal para el Aprendizaje exige múltiples medios de representación. Un REA accesible no solo cumple requisitos legales (WCAG) sino que garantiza que estudiantes con discapacidades visuales, auditivas o cognitivas puedan acceder al contenido en igualdad de condiciones.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">5</span>
+          Rigor de Metadatos LOM
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿Están presentes los campos obligatorios de LOM según el marco Ceibal 4.1: Tipo de recurso (learningResourceType) y Palabras Clave (keywords)?<br><br>
+            Sin estos metadatos el recurso es invisible para los buscadores del repositorio. El tipo de recurso permite filtrar por naturaleza didáctica; las palabras clave permiten la indexación temática y el descubrimiento por docentes de otras áreas.
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">
+          <span class="acc-num">6</span>
+          Navegabilidad para Lectores de Pantalla
+          <span class="acc-arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <strong>Criterio:</strong> ¿La estructura de títulos (H1, H2, H3…) es coherente y semánticamente correcta para tecnologías de asistencia?<br><br>
+            Los lectores de pantalla (NVDA, JAWS, VoiceOver) navegan documentos por su jerarquía de encabezados. Un REA con estructura de títulos incorrecta o ausente es inaccesible para usuarios ciegos o con baja visión, independientemente del contenido que tenga.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading"><h2>📥 Bibliografía y Fuentes</h2></div>
+
+    <div class="resource-links">
+      <a href="http://www.unesco.org/new/es/communication-and-information/access-to-knowledge/open-educational-resources/" target="_blank" rel="noopener" class="btn-resource">
+        🌐 UNESCO — Recursos Educativos Abiertos
+      </a>
+      <a href="https://unesdoc.unesco.org/ark:/48223/pf0000246687_spa" target="_blank" rel="noopener" class="btn-resource">
+        🌐 UNESCO — Declaración de París 2012 sobre los REA
+      </a>
+      <a href="https://es.wikiversity.org/wiki/Licencias_Creative_Commons_y_contenidos_abiertos" target="_blank" rel="noopener" class="btn-resource">
+        🌐 Wikiversidad — Licencias CC y contenidos abiertos
+      </a>
+      <a href="Modulo4/Recursos/Baldiris_et_al_2015_CO-CREARIA.pdf" target="_blank" rel="noopener" class="btn-resource">
+        📄 Baldiris et al. (2015) — CO-CREARIA (PDF)
+      </a>
+      <a href="Modulo4/Recursos/Carrero_Romero_2025_Educacion_Mediacion_Virtual.pdf" target="_blank" rel="noopener" class="btn-resource">
+        📄 Carrero Romero (2025) — Educación y Mediación Virtual (PDF)
+      </a>
+      <a href="Modulo4/Recursos/referencias.html" target="_blank" rel="noopener" class="btn-resource">
+        📋 Bibliografía completa del módulo
+      </a>
+    </div>
+
+    <div class="section-heading"><h2>📺 Recursos Audiovisuales</h2></div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — Las claves del Diseño Universal del Aprendizaje (DUA)</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=6ZpjiYEupMk" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/6ZpjiYEupMk/hqdefault.jpg" alt="Las claves del Diseño Universal del Aprendizaje DUA" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">Las claves del Diseño Universal del Aprendizaje (DUA)</div>
+      </a>
+    </div>
+
+    <div class="video-section">
+      <p class="video-label">▶ Video — Diseño Universal para el Aprendizaje (DUA) — 3 principios</p>
+      <a class="video-card" href="https://www.youtube.com/watch?v=qFKoR7NaxNw" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/qFKoR7NaxNw/hqdefault.jpg" alt="Diseño Universal para el Aprendizaje DUA" loading="lazy">
+        <div class="video-play"><div class="video-play-btn"></div></div>
+        <div class="video-title-overlay">Diseño Universal para el Aprendizaje (DUA) — Los 3 principios</div>
+      </a>
+    </div>
+
+  </div>
+
+</div><!-- end .tab-panels -->
+
+<!-- ═══════ MODAL OVERLAY ═══════ -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModalOnOverlay(event)" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── TAB SYSTEM ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  document.getElementById('panel-' + name).classList.add('active');
+  const btn = [...document.querySelectorAll('.tab-btn')]
+    .find(b => b.getAttribute('onclick') === "switchTab('" + name + "')");
+  if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected', 'true'); }
+}
+
+// ── MODAL SYSTEM ──
+const MODAL_DATA = {
+  // ── 4Rs ──
+  'r-revisar': {
+    title: '✏️ Revisar (Revise)',
+    body: `<p>La R de <strong>Revisar</strong> permite adaptar y mejorar el recurso según las necesidades específicas del contexto educativo, el perfil del estudiante o los objetivos curriculares locales.</p>
+    <h4>¿Qué implica en la práctica?</h4>
+    <ul>
+      <li>Reescribir ejemplos con referencias locales o culturalmente relevantes</li>
+      <li>Ajustar el nivel de dificultad para una audiencia específica</li>
+      <li>Actualizar datos, fechas o estadísticas desactualizadas</li>
+      <li>Traducir el recurso a otro idioma o variedad lingüística</li>
+      <li>Adaptar el formato para necesidades de accesibilidad</li>
+    </ul>
+    <h4>Requisito técnico</h4>
+    <p>Para poder Revisar, el recurso <strong>debe estar disponible en formato editable</strong> (ODT, PPTX editable, código fuente). Un PDF cerrado impide ejercer esta R, aunque su licencia lo permita legalmente.</p>`
+  },
+  'r-combinar': {
+    title: '🔀 Combinar (Remix)',
+    body: `<p>La R de <strong>Combinar</strong> permite mezclar materiales de distintas fuentes para generar una obra original y enriquecida, mayor que la suma de sus partes.</p>
+    <h4>Ejemplo de Remix</h4>
+    <p>Un docente combina un video explicativo con licencia CC BY con un texto de referencia con licencia CC BY-SA para crear una nueva unidad didáctica. ¿Qué licencia debe tener la obra resultante?</p>
+    <h4>El problema de compatibilidad</h4>
+    <ul>
+      <li>Combinar CC BY + CC BY-SA → la obra derivada debe ser CC BY-SA</li>
+      <li>Combinar CC BY-SA + CC BY-NC → puede generar <strong>conflicto de compatibilidad</strong></li>
+      <li>Resolver estos conflictos manualmente es complejo — para eso existe Yabalá</li>
+    </ul>
+    <h4>Conexión con Yabalá</h4>
+    <p>La herramienta Calculator de Yabalá identifica automáticamente la licencia resultante cuando se combinan materiales con distintas licencias CC, evitando infracciones involuntarias.</p>`
+  },
+  'r-reusar': {
+    title: '♻️ Reusar (Reuse)',
+    body: `<p>La R de <strong>Reusar</strong> permite utilizar el recurso tal como está, en múltiples contextos, cursos, instituciones y formatos, sin necesidad de modificarlo.</p>
+    <h4>Alcance del Reuso</h4>
+    <ul>
+      <li>Incorporar el recurso en distintos cursos o asignaturas</li>
+      <li>Usarlo en diferentes ciclos lectivos sin solicitar permiso</li>
+      <li>Compartirlo con colegas para que lo usen en sus propias aulas</li>
+      <li>Integrarlo en una plataforma LMS (Moodle, Schoology, CREA)</li>
+      <li>Imprimirlo o proyectarlo en clase presencial</li>
+    </ul>
+    <h4>Valor para el ecosistema educativo</h4>
+    <p>El Reuso multiplica el impacto de cada hora invertida en la creación de un recurso. Un REA bien diseñado puede ser usado por miles de docentes en distintos países sin que su autor deba gestionar ningún permiso individual.</p>`
+  },
+  'r-redistribuir': {
+    title: '📤 Redistribuir (Redistribute)',
+    body: `<p>La R de <strong>Redistribuir</strong> permite compartir copias del recurso original o sus derivadas con otras personas, grupos o instituciones.</p>
+    <h4>¿Qué habilita esta R?</h4>
+    <ul>
+      <li>Subir el recurso a un repositorio educativo público</li>
+      <li>Incluirlo en una compilación o pack de materiales docentes</li>
+      <li>Compartirlo en redes sociales o plataformas de intercambio</li>
+      <li>Distribuirlo en formato impreso o digital a estudiantes</li>
+      <li>Publicar una versión mejorada en un nuevo repositorio</li>
+    </ul>
+    <h4>El efecto viral del conocimiento abierto</h4>
+    <p>La Redistribución es la R que permite que el conocimiento se propague de forma exponencial. Cada docente que redistribuye un REA amplía su alcance sin incrementar el costo de producción, generando lo que Wiley llama "inteligencia colectiva aplicada a la educación".</p>`
+  },
+  // ── Marcos Teóricos ──
+  'teo-conectivismo': {
+    title: '🌐 Conectivismo (Siemens, 2005)',
+    body: `<p>El <strong>Conectivismo</strong> de George Siemens propone que en la era digital el aprendizaje ya no reside en la mente individual, sino en la <strong>capacidad de navegar y nutrir redes de información</strong> distribuidas.</p>
+    <h4>Principios clave</h4>
+    <ul>
+      <li>El conocimiento puede residir fuera del ser humano (en bases de datos, nodos de red)</li>
+      <li>Aprender consiste en crear conexiones entre nodos de información</li>
+      <li>La capacidad de saber más es más importante que lo que se sabe actualmente</li>
+      <li>La toma de decisiones es en sí misma un proceso de aprendizaje</li>
+    </ul>
+    <h4>Conexión con los REA</h4>
+    <p>Los Recursos Educativos Abiertos son <strong>nodos en una red de conocimiento distribuido</strong>. Cuando un docente revisa, combina y redistribuye un REA, está ejerciendo activamente el conectivismo: creando nuevas conexiones en la red global de saberes educativos.</p>
+    <h4>Implicación para el rol docente</h4>
+    <p>El docente conectivista no es fuente del conocimiento sino <strong>curador de redes</strong>: selecciona, filtra, vincula y ayuda a los estudiantes a navegar el ecosistema de REA disponibles.</p>`
+  },
+  'teo-constructivismo': {
+    title: '🏗️ Constructivismo Sociocultural (Vygotsky)',
+    body: `<p>Desde el <strong>Constructivismo Sociocultural de Vygotsky</strong>, el aprendizaje es un proceso activo mediado por herramientas culturales. Los REA actúan como <strong>instrumentos de mediación simbólica</strong> que facilitan la construcción del conocimiento.</p>
+    <h4>Conceptos centrales</h4>
+    <ul>
+      <li><strong>Mediación simbólica:</strong> el lenguaje, los textos y los recursos digitales son herramientas que median entre el sujeto y el objeto de conocimiento</li>
+      <li><strong>Construcción social:</strong> el conocimiento se construye en interacción con otros (compañeros, docentes, comunidad)</li>
+      <li><strong>Internalización:</strong> lo que primero ocurre en el plano social luego se internaliza como proceso psicológico individual</li>
+    </ul>
+    <h4>El REA como mediador</h4>
+    <p>Un REA bien diseñado no es un repositorio pasivo de información. Es una herramienta que <strong>estructura la interacción del estudiante con el objeto de conocimiento</strong>, orientando el proceso de construcción de saberes y habilitando la colaboración entre pares.</p>`
+  },
+  'teo-zdp': {
+    title: '📐 Zona de Desarrollo Próximo (ZDP)',
+    body: `<p>La <strong>Zona de Desarrollo Próximo (ZDP)</strong> es la distancia entre lo que un estudiante puede hacer de forma autónoma y lo que puede lograr con la guía de un par más capaz o una herramienta mediadora.</p>
+    <h4>El REA como andamio (scaffolding)</h4>
+    <p>Un REA bien diseñado funciona como <strong>andamio cognitivo</strong>: provee la estructura necesaria para que el estudiante pueda avanzar hacia niveles superiores de comprensión sin la presencia física del docente.</p>
+    <h4>Ejemplos en entornos virtuales</h4>
+    <ul>
+      <li>Una simulación interactiva que guía paso a paso al estudiante</li>
+      <li>Un video con preguntas intercaladas que verifican la comprensión</li>
+      <li>Una guía de lectura con preguntas que orientan la interpretación</li>
+      <li>Un cuestionario adaptativo que ajusta la dificultad al nivel del estudiante</li>
+    </ul>
+    <h4>Relevancia en EaD</h4>
+    <p>En la educación a distancia, el docente no puede estar presente en cada momento de aprendizaje. Un REA diseñado con la ZDP en mente <strong>extiende la presencia pedagógica del docente</strong> de forma asincrónica, reduciendo la brecha entre el aprendizaje guiado y el autónomo.</p>`
+  },
+  // ── CC Licenses ──
+  'cc-by': {
+    title: '🔓 CC BY — Atribución',
+    body: `<p>La licencia <strong>CC BY (Creative Commons Atribución)</strong> es la más permisiva de la familia Creative Commons. Solo exige reconocer la autoría original.</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Copiar y redistribuir el material</li>
+      <li>✅ Adaptar, transformar y crear obras derivadas</li>
+      <li>✅ Uso comercial</li>
+      <li>✅ Uso en cualquier medio o formato</li>
+    </ul>
+    <h4>Única condición</h4>
+    <p>Atribuir crédito al autor original de forma apropiada, indicar si se realizaron cambios y proporcionar un enlace a la licencia.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-green">✓ Sí — Califica como REA</span><br>Cumple las 4Rs sin restricciones. Es la licencia recomendada para maximizar el impacto y la reutilización de un recurso educativo.</p>`
+  },
+  'cc-by-sa': {
+    title: '🔓 CC BY-SA — Atribución-CompartirIgual',
+    body: `<p>La licencia <strong>CC BY-SA</strong> permite crear obras derivadas, pero exige que las derivadas se publiquen bajo la misma licencia o una compatible (copyleft educativo).</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Redistribuir y adaptar el material</li>
+      <li>✅ Uso comercial</li>
+      <li>⚠️ Las derivadas deben compartirse con la misma licencia SA</li>
+    </ul>
+    <h4>Analogía con el software libre</h4>
+    <p>La cláusula SA es similar a la GPL de software: garantiza que el conocimiento abierto permanezca abierto. Cualquiera que mejore el recurso debe devolver esa mejora a la comunidad.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-green">✓ Sí — Califica como REA</span><br>Permite derivadas. La restricción SA asegura que el ecosistema REA se retroalimente con mejoras.</p>`
+  },
+  'cc-by-nc': {
+    title: '🔓 CC BY-NC — Atribución-NoComercial',
+    body: `<p>La licencia <strong>CC BY-NC</strong> permite la reutilización y adaptación del material, pero únicamente para fines no comerciales.</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Redistribuir y adaptar</li>
+      <li>✅ Derivadas permitidas</li>
+      <li>❌ Prohibición de uso comercial</li>
+    </ul>
+    <h4>¿Qué cuenta como "uso comercial"?</h4>
+    <p>El uso comercial incluye vender el recurso, usarlo en plataformas de pago o incluirlo en productos de formación con fines de lucro. El uso en instituciones educativas públicas generalmente no es comercial.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-green">✓ Sí — Califica como REA</span><br>Permite derivadas. La restricción NC limita la interoperabilidad con contenidos de plataformas comerciales.</p>`
+  },
+  'cc-by-nc-sa': {
+    title: '🔓 CC BY-NC-SA — NoComercial + CompartirIgual',
+    body: `<p>La licencia <strong>CC BY-NC-SA</strong> combina las restricciones NoComercial y CompartirIgual: las derivadas deben publicarse con la misma licencia y sin fines comerciales.</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Redistribuir y adaptar</li>
+      <li>✅ Derivadas permitidas</li>
+      <li>❌ Prohibición de uso comercial</li>
+      <li>⚠️ Las derivadas deben compartirse con CC BY-NC-SA</li>
+    </ul>
+    <h4>Contexto de uso</h4>
+    <p>Es la licencia más elegida por instituciones educativas que quieren garantizar que sus materiales se mantengan abiertos y sin fines de lucro. Muy común en repositorios universitarios latinoamericanos.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-green">✓ Sí — Califica como REA</span><br>Es la licencia CC más restrictiva que aún califica como REA. Permite las 4Rs dentro de un ecosistema no comercial.</p>`
+  },
+  'cc-by-nd': {
+    title: '🔒 CC BY-ND — Atribución-SinDerivadas',
+    body: `<p>La licencia <strong>CC BY-ND</strong> permite redistribuir el material siempre que no se modifique. Prohíbe cualquier adaptación o transformación.</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Redistribuir (copias literales)</li>
+      <li>✅ Uso comercial de copias literales</li>
+      <li>❌ No se puede adaptar, traducir ni mejorar</li>
+      <li>❌ No se puede crear obras derivadas</li>
+    </ul>
+    <h4>¿Por qué no es REA?</h4>
+    <p>La prohibición de derivadas elimina las Rs de <strong>Revisar</strong> y <strong>Combinar</strong>. Sin estas capacidades, el recurso no puede adaptarse al contexto local, traducirse ni mejorarse, lo que contradice la esencia de los REA.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-red">✗ No — No califica como REA</span><br>No permite obras derivadas. Solo puede usarse como material de consulta estática.</p>`
+  },
+  'cc-by-nc-nd': {
+    title: '🔒 CC BY-NC-ND — NoComercial + SinDerivadas',
+    body: `<p>La licencia <strong>CC BY-NC-ND</strong> es la más restrictiva de la familia Creative Commons. Combina las limitaciones de NC (no comercial) y ND (sin derivadas).</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Redistribuir copias literales para uso no comercial</li>
+      <li>❌ No se puede usar comercialmente</li>
+      <li>❌ No se puede adaptar ni modificar</li>
+      <li>❌ No se puede combinar con otros materiales</li>
+    </ul>
+    <h4>Equivalencia práctica</h4>
+    <p>CC BY-NC-ND es funcionalmente muy cercana al copyright tradicional ("todos los derechos reservados"). Solo permite compartir copias exactas del original para uso personal o educativo no comercial.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-red">✗ No — No califica como REA</span><br>Bloquea las Rs de Revisar y Combinar. Es la licencia menos compatible con los principios de apertura educativa.</p>`
+  },
+  'cc0': {
+    title: '🌐 CC0 — Dominio Público',
+    body: `<p><strong>CC0</strong> ("No Rights Reserved") es la herramienta de Creative Commons que permite a los autores renunciar a todos sus derechos sobre una obra y dedicarla al dominio público universal.</p>
+    <h4>¿Qué permite?</h4>
+    <ul>
+      <li>✅ Cualquier uso sin restricción</li>
+      <li>✅ Modificar, combinar y redistribuir libremente</li>
+      <li>✅ Uso comercial</li>
+      <li>✅ Sin obligación de atribución (aunque es buena práctica darla)</li>
+    </ul>
+    <h4>¿Cuándo usar CC0?</h4>
+    <p>Ideal para datos educativos, conjuntos de imágenes base, plantillas y materiales diseñados para ser usados como insumos en la creación de otros recursos. Maximiza el alcance y la reutilización.</p>
+    <h4>¿Es REA?</h4>
+    <p><span class="chip chip-green">✓ Sí — Máxima apertura posible</span><br>CC0 es la expresión más pura de los principios REA. Sin restricciones legales de ningún tipo.</p>`
+  },
+  // ── Yabalá ──
+  'yabala-calculator': {
+    title: '🔧 Yabalá Calculator — Compatibilidad de Licencias',
+    body: `<p><strong>Yabalá</strong> es un módulo de software diseñado para resolver uno de los problemas más frecuentes en la creación de REA: determinar qué licencia debe tener una obra derivada creada a partir de materiales con distintas licencias CC.</p>
+    <h4>¿Qué problema resuelve?</h4>
+    <p>Combinar un recurso CC BY-SA con un recurso CC BY-NC genera un conflicto de compatibilidad. Resolverlo manualmente requiere leer tablas de compatibilidad complejas. Yabalá lo hace automáticamente.</p>
+    <h4>Funciones principales</h4>
+    <ul>
+      <li>Identifica la licencia resultante al combinar materiales (mostrando opciones más y menos restrictivas)</li>
+      <li>Genera <strong>URLs permanentes</strong> para créditos en formato HTML, listas para incrustar en cualquier página</li>
+      <li>Crea <strong>códigos QR</strong> que vinculan a la información completa de autoría</li>
+      <li>Garantiza trazabilidad del recurso en entornos digitales y físicos (el QR en una impresión vincula al original)</li>
+    </ul>
+    <h4>Valor pedagógico</h4>
+    <p>Yabalá no solo protege legalmente al docente: forma parte de una cultura de <strong>atribución rigurosa</strong> que enseña a los estudiantes la importancia de reconocer la autoría en la era digital.</p>`
+  },
+  // ── Metadatos ──
+  'meta-dublin': {
+    title: '🗃️ Dublin Core — 15 Elementos',
+    body: `<p>El estándar <strong>Dublin Core</strong> es un esquema de metadatos universal con 15 elementos diseñado para describir cualquier recurso digital, independientemente de su naturaleza educativa o no. Su fortaleza es la interoperabilidad.</p>
+    <h4>Los 15 elementos</h4>
+    <ul>
+      <li><strong>Título:</strong> nombre dado al recurso</li>
+      <li><strong>Creador:</strong> autor o entidad responsable del contenido</li>
+      <li><strong>Materia:</strong> tema o palabras clave</li>
+      <li><strong>Descripción:</strong> resumen o abstract del contenido</li>
+      <li><strong>Editor:</strong> entidad responsable de publicar el recurso</li>
+      <li><strong>Colaborador:</strong> contribuyentes secundarios</li>
+      <li><strong>Fecha:</strong> fecha de creación o disponibilidad</li>
+      <li><strong>Tipo:</strong> naturaleza o género del recurso</li>
+      <li><strong>Formato:</strong> manifestación física o digital (PDF, MP4…)</li>
+      <li><strong>Identificador:</strong> referencia unívoca (DOI, URL, ISBN)</li>
+      <li><strong>Fuente:</strong> recurso del que deriva este</li>
+      <li><strong>Idioma:</strong> lengua del contenido intelectual</li>
+      <li><strong>Relación:</strong> referencias a recursos relacionados</li>
+      <li><strong>Cobertura:</strong> alcance temporal o espacial del contenido</li>
+      <li><strong>Derechos:</strong> información sobre licencia y propiedad intelectual</li>
+    </ul>`
+  },
+  'meta-lom': {
+    title: '📐 LOM — Learning Object Metadata',
+    body: `<p><strong>LOM (Learning Object Metadata)</strong> extiende Dublin Core con dimensiones pedagógicas específicas. Mientras Dublin Core describe qué es un recurso, LOM describe <em>cómo se usa</em> en un contexto educativo.</p>
+    <h4>LOM vs. Dublin Core</h4>
+    <ul>
+      <li>Dublin Core: 15 campos generales para cualquier recurso digital</li>
+      <li>LOM: más de 60 campos organizados en 9 categorías pedagógicas</li>
+    </ul>
+    <h4>Enfoque pragmático — Ceibal 4.1</h4>
+    <p>Completar todos los campos LOM genera fatiga administrativa. El marco de calidad del repositorio Ceibal 4.1 establece solo <strong>dos campos como obligatorios</strong>:</p>
+    <ul>
+      <li><strong>learningResourceType:</strong> define la naturaleza didáctica del recurso (simulación, experimento, cuestionario, ejercicio, presentación…). Permite filtrar por tipo en el buscador del repositorio.</li>
+      <li><strong>keywords:</strong> descriptores semánticos que facilitan la indexación temática y el descubrimiento por docentes de otras áreas o instituciones.</li>
+    </ul>
+    <h4>Por qué importa</h4>
+    <p>Sin estos metadatos el recurso es invisible para los sistemas de búsqueda. Con solo estos dos campos, el recurso es encontrable por cualquier docente que busque en el repositorio.</p>`
+  },
+  'meta-dspace': {
+    title: '🏛️ DSpace — Jerarquía Técnica',
+    body: `<p><strong>DSpace</strong> es la plataforma de repositorio institucional más usada en universidades latinoamericanas. Organiza el conocimiento mediante una jerarquía estricta de niveles.</p>
+    <h4>Niveles de la jerarquía</h4>
+    <ul>
+      <li><strong>Comunidades:</strong> agrupaciones de alto nivel (ej. "Facultad de Educación")</li>
+      <li><strong>Colecciones:</strong> subconjuntos temáticos dentro de una comunidad (ej. "REA de Matemática")</li>
+      <li><strong>Ítems:</strong> la unidad básica de archivo — equivalente a un recurso o publicación</li>
+      <li><strong>Bundles:</strong> paquetes dentro de un ítem que agrupan archivos relacionados (ej. el contenido del recurso + su licencia + su miniatura)</li>
+      <li><strong>Bitstreams:</strong> los flujos de datos reales — cada archivo individual (imagen, PDF, video, código fuente)</li>
+    </ul>
+    <h4>La clave de la calidad</h4>
+    <p>La calidad del repositorio no reside solo en su almacenamiento, sino en la <strong>precisión con que cada Bitstream está vinculado a sus metadatos pedagógicos LOM</strong>. Un Bitstream sin metadatos precisos es un recurso invisible e inutilizable en la búsqueda global.</p>`
+  },
+  // ── CO-CREARIA Phases ──
+  'fase-analisis': {
+    title: '🔍 Fase 1: Análisis',
+    body: `<p>La fase de <strong>Análisis</strong> es el punto de partida del modelo CO-CREARIA. Antes de diseñar cualquier contenido, el equipo de co-creación debe comprender profundamente a quiénes va dirigido el recurso y en qué entorno será usado.</p>
+    <h4>Actividades principales</h4>
+    <ul>
+      <li>Definición de roles del equipo co-creador (docentes, psicopedagogos, padres, estudiantes)</li>
+      <li>Análisis del perfil poblacional según los principios UDL: barreras sensoriales, cognitivas, motoras y tecnológicas</li>
+      <li>Análisis del ambiente tecnológico: conectividad, dispositivos disponibles, plataforma de entrega</li>
+    </ul>
+    <h4>Productos de la fase</h4>
+    <ul>
+      <li>📄 Reporte de perfil de población según UDL</li>
+      <li>📄 Análisis de ambiente tecnológico y de accesibilidad</li>
+    </ul>`
+  },
+  'fase-diseno': {
+    title: '✏️ Fase 2: Diseño',
+    body: `<p>La fase de <strong>Diseño</strong> traduce el análisis poblacional en decisiones concretas de contenido y estructura, aplicando los principios DUA desde el inicio.</p>
+    <h4>Actividades principales</h4>
+    <ul>
+      <li>Creación de guiones instruccionales para cada componente del REA</li>
+      <li>Detección de barreras potenciales de acceso en cada elemento propuesto</li>
+      <li>Diseño de múltiples medios de representación (texto, audio, video, imagen)</li>
+      <li>Planificación de estrategias de acción y expresión para los estudiantes</li>
+    </ul>
+    <h4>Productos de la fase</h4>
+    <ul>
+      <li>📄 Diseño de métodos y materiales con alternativas de representación</li>
+      <li>📄 Reporte de análisis de barreras potenciales</li>
+    </ul>`
+  },
+  'fase-desarrollo': {
+    title: '⚙️ Fase 3: Desarrollo',
+    body: `<p>La fase de <strong>Desarrollo</strong> es la producción efectiva del REA, usando herramientas de autoría que garanticen la accesibilidad del resultado final.</p>
+    <h4>Actividades principales</h4>
+    <ul>
+      <li>Producción del contenido con herramientas de autoría accesibles (ATutor, H5P, Genially)</li>
+      <li>Generación del recurso en formatos editables y accesibles</li>
+      <li>Incorporación de etiquetas alt, subtítulos y descripciones para todos los elementos multimedia</li>
+      <li>Documentación del proceso de desarrollo para asegurar transferibilidad</li>
+    </ul>
+    <h4>Productos de la fase</h4>
+    <ul>
+      <li>📄 REA disponible en plataforma o repositorio</li>
+      <li>📄 Documento descriptivo del proceso de desarrollo</li>
+    </ul>`
+  },
+  'fase-evaluacion': {
+    title: '✅ Fase 4: Evaluación',
+    body: `<p>La fase de <strong>Evaluación</strong> valida el REA en tres ejes simultáneos: calidad técnica, accesibilidad web y alineación pedagógica con los principios UDL.</p>
+    <h4>Tres ejes de validación</h4>
+    <ul>
+      <li><strong>Calidad técnica:</strong> funcionamiento correcto en distintos dispositivos y navegadores, velocidad de carga, integridad de archivos</li>
+      <li><strong>Accesibilidad web (WCAG):</strong> contraste de colores, navegación por teclado, compatibilidad con lectores de pantalla, subtítulos en videos</li>
+      <li><strong>Alineación UDL:</strong> verificación de que los principios de representación múltiple, acción y expresión, y motivación están presentes</li>
+    </ul>
+    <h4>Productos de la fase</h4>
+    <ul>
+      <li>📄 Reporte de calidad técnica</li>
+      <li>📄 Reporte de accesibilidad web</li>
+      <li>📄 Reporte de cumplimiento de principios UDL</li>
+    </ul>`
+  },
+  'fase-implementacion': {
+    title: '🚀 Fase 5: Implementación',
+    body: `<p>La fase de <strong>Implementación</strong> despliega el REA en escenarios educativos reales con estudiantes, y recoge retroalimentación para la mejora continua.</p>
+    <h4>Actividades principales</h4>
+    <ul>
+      <li>Despliegue del recurso en la plataforma educativa institucional</li>
+      <li>Recolección de datos de uso y experiencia del estudiante</li>
+      <li>Identificación de nuevas barreras detectadas en el uso real</li>
+      <li>Documentación de resultados para informar ciclos futuros de CO-CREARIA</li>
+    </ul>
+    <h4>Productos de la fase</h4>
+    <ul>
+      <li>📄 Resultados del despliegue en contexto real</li>
+      <li>📄 Reporte de ejecución con recomendaciones de mejora</li>
+    </ul>
+    <h4>Naturaleza iterativa</h4>
+    <p>CO-CREARIA no es un ciclo lineal. Los resultados de la Implementación retroalimentan una nueva fase de Análisis, generando un proceso de mejora continua centrado en el usuario.</p>`
+  },
+  // ── Case Study ──
+  'caso-upb': {
+    title: '🏛️ Caso UPB — "Cuida tu ambiente con TIC"',
+    body: `<p>El proyecto <strong>"Cuida tu ambiente con TIC"</strong> de la Universidad Pontificia Bolivariana (Colombia) es una evidencia empírica de la aplicación del modelo CO-CREARIA en un contexto real de educación inclusiva.</p>
+    <h4>Contexto</h4>
+    <p>El recurso fue diseñado para estudiantes con <strong>baja visión</strong> y diagnósticos de <strong>hiperactividad (TDAH)</strong>, dos perfiles con necesidades de accesibilidad muy distintas.</p>
+    <h4>Equipo co-creador</h4>
+    <ul>
+      <li>Docentes de la institución educativa</li>
+      <li>Psicopedagogos especializados en necesidades educativas especiales</li>
+      <li>Padres y familias de los estudiantes</li>
+    </ul>
+    <h4>Metodologías aplicadas</h4>
+    <ul>
+      <li><strong>ABP (Aprendizaje Basado en Proyectos):</strong> el cuidado ambiental como proyecto real y significativo</li>
+      <li><strong>Aula Invertida:</strong> el contenido se trabaja de forma asincrónica y el tiempo de clase se dedica a la práctica</li>
+      <li><strong>Mediación virtual:</strong> actividades diseñadas específicamente para entornos digitales accesibles</li>
+    </ul>
+    <h4>Resultado</h4>
+    <p>La co-creación con participación de familias y especialistas transformó el contenido en experiencias multimodales que <strong>eliminaron las barreras de acceso tradicionales</strong>, demostrando que CO-CREARIA es un modelo aplicable en contextos reales, no solo teórico.</p>`
+  }
+};
+
+function openModal(key) {
+  const data = MODAL_DATA[key];
+  if (!data) return;
+  document.getElementById('modal-title').textContent = data.title;
+  document.getElementById('modal-body').innerHTML = data.body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── ACCORDION SYSTEM ──
+function toggleAcc(el) {
+  const item = el.closest('.acc-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
